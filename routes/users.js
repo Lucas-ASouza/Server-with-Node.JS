@@ -11,7 +11,7 @@ module.exports = (app)=>{
     let route = app.route('/users')
 
     route.get((req, res) => {
-    
+    //fazer consulta com metodo GET
         db.find({}).sort({name:1}).exec((err, users)=>{
         //encontre no banco de dados todas as ocorrências de nome de forma crescente(decrescente seria -1)
        
@@ -31,7 +31,7 @@ module.exports = (app)=>{
 
     
     route.post((req, res)=>{
-    
+    //fazer inserções com metodo POST
         db.insert(req.body, (err, user)=>{
 
             if (err) {
@@ -49,7 +49,7 @@ module.exports = (app)=>{
     let routeId = app.route('/users/:id');
 
     routeId.get((req, res)=>{
-
+    //fazer consulta específica com base no ID com o metodo GET
         db.findOne({_id:req.params.id}).exec((err,user)=>{
             if (err) {
                 app.utils.error.send(err, req, res);
@@ -59,4 +59,30 @@ module.exports = (app)=>{
         });
 
     });
+
+    routeId.put((req, res)=>{
+    //fazer edições com metodo PUT
+        db.update({_id:req.params.id}, req.body, err =>{
+            if (err) {
+                app.utils.error.send(err, req, res);
+            } else{
+                res.status(200).json(Object.assign(req.params, req.body));
+                //Id está dentro de req.params, enquanto o resto dos dados está em req.body, Object assign mescla os dois objetos           
+            }
+        });
+
+    });
+
+    routeId.delete((req, res)=>{
+    //fazer exclusões com o metódo DELETE
+        db.remove({_id: req.params.id}, {}, err=>{
+            if (err) {
+                app.utils.error.send(err, req, res);
+            } else{
+                res.status(200).json(req.params);
+                //Id está dentro de req.params, enquanto o resto dos dados está em req.body, Object assign mescla os dois objetos           
+            }
+        });
+
+    });    
 };
