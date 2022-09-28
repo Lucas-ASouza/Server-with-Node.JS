@@ -1,12 +1,12 @@
-module.exports = (app)=>{
-
-    app.get('/',(req, res)=>{
+module.exports = app => {
+ 
+    app.get('/', (req, res) => {
 
         res.statusCode = 200;
-        res.setHeader('Contet-Type', 'text/html');
-        res.end('<h1>Olá</h1>')
-    
-    });
+        res.setHeader('Content-Type', 'text/html');
+        res.end('<h1>RESTful API</h1><p>Projeto desenvolvido no Curso Completo de JavaScript da Hcode na Udemy.com</p>');
 
-}
+    });
+    
+};
 //exporta o modulo routes para os outros
